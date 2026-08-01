@@ -22,6 +22,9 @@ If sd-itemspawner is useful to you, please ⭐ the repo. Issues and pull request
 
 </div>
 
+
+<img width="1267" height="845" alt="image" src="https://github.com/user-attachments/assets/9796e11d-926c-4178-8476-3c39230bd56b" />
+
 ---
 
 > [!IMPORTANT]
