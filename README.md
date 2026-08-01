@@ -125,7 +125,19 @@ web/                            the NUI (React + TypeScript + Vite, prebuilt)
 
 sd-itemspawner does **not** touch the database and has no SQL of its own.
 
-### 1. Start the resource
+### 1. Download
+
+Grab **`sd-itemspawner-vX.Y.Z.zip`** from the
+[latest release](https://github.com/Samuels-Development/sd-itemspawner/releases/latest) and extract
+it into your resources folder. The zip contains the prebuilt NUI, so there is no build step.
+
+> [!NOTE]
+> Don't clone or "Download ZIP" from the repo unless you intend to work on the UI. The compiled
+> interface is not committed — it is built fresh by CI and attached to each release — so a source
+> checkout has an empty `web/build` and the panel will not render. See
+> [Building the UI](#building-the-ui) if that is what you want.
+
+### 2. Start the resource
 
 ```cfg
 ensure ox_lib
@@ -133,9 +145,7 @@ ensure ox_inventory
 ensure sd-itemspawner
 ```
 
-The NUI ships prebuilt in `web/build`, so no build step is needed to run it.
-
-### 2. Give yourself permission
+### 3. Give yourself permission
 
 `lib.addCommand` creates the `command.itemspawner` ACE for `group.admin` automatically, but nobody
 is in that group by default. Add yourself in `server.cfg`:
@@ -156,7 +166,7 @@ add_ace group.spawner command.itemspawner allow
 add_principal identifier.license:YOUR_LICENSE_HERE group.spawner
 ```
 
-### 3. Open it
+### 4. Open it
 
 ```
 /itemspawner      (or /spawner)
@@ -187,17 +197,29 @@ it is never sent to a client:
 
 ## Building the UI
 
-Only needed if you change the interface.
+Needed if you cloned the repo rather than downloading a release, or if you are changing the
+interface. `web/build` is not committed.
 
 ```bash
 cd web
-npm install
+npm ci
 npm run build
 ```
 
 Output lands in `web/build` with unhashed filenames to match the manifest's `files{}` globs.
 `npm run dev` runs the panel in a browser against a generated mock catalog, so you can work on it
 without launching the game.
+
+### Releasing
+
+Publishing a GitHub Release triggers `.github/workflows/release.yml`, which checks out the tag,
+builds the NUI from source, stages an allowlist of runtime files into a correctly-named resource
+folder, cross-checks that staging against every path `fxmanifest.lua` declares, and attaches
+`sd-itemspawner-<tag>.zip` to the release. `workflow_dispatch` re-packages an existing tag without
+unpublishing it.
+
+Every push and pull request runs `.github/workflows/ci.yml`: `tsc --noEmit`, a production build,
+and a Lua syntax check across every `.lua` file outside `web/`.
 
 ## Credits
 

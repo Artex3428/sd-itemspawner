@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: build + checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install deps
+        working-directory: web
+        run: npm ci
+
+      # `build` is `tsc --noEmit && vite build`, so this typechecks as well as bundles.
+      - name: Build NUI
+        working-directory: web
+        run: npm run build
+
+      - name: Install Lua
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends lua5.4
+
+      # loadfile() rather than `luac -p` so this needs only the interpreter, which the lua5.4
+      # package definitely ships. Catches syntax errors that would otherwise only show up as a
+      # failed resource start in someone's server console.
+      - name: Syntax-check Lua
+        run: |
+          fail=0
+          while IFS= read -r file; do
+            if lua5.4 -e 'local f, err = loadfile(arg[1]); if not f then io.stderr:write(err, "\n"); os.exit(1) end' "$file"; then
+              echo "ok  $file"
+            else
+              echo "::error file=$file::Lua syntax error"
+              fail=1
+            fi
+          done < <(find . -name '*.lua' -not -path './web/*')
+          exit $fail
