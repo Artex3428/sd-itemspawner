@@ -1,0 +1,9 @@
+node_modules/
+
+# Runtime state: written by server/spawner/presets.lua at runtime. The data/ folder itself is
+# tracked (via .gitkeep) because SaveResourceFile writes into an existing directory.
+data/presets.json
+
+.DS_Store
+Thumbs.db
+*.log

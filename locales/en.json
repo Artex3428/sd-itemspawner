@@ -1,0 +1,33 @@
+{
+  "command.help": "Open the admin item spawner",
+
+  "err.no_session": "Run the command again to open a spawner session.",
+  "err.not_allowed": "You are not allowed to do that.",
+  "err.session_expired": "Your spawner session expired — run the command again.",
+  "err.rate_limited": "Slow down. Too many spawns in a short window.",
+  "err.no_response": "The server did not respond. Was the resource restarted?",
+
+  "err.bad_request": "Malformed request.",
+  "err.unknown_item": "That item does not exist in ox_inventory.",
+  "err.blacklisted": "That item is blacklisted and cannot be spawned.",
+  "err.bad_count": "Invalid amount.",
+  "err.empty_selection": "Nothing selected.",
+  "err.selection_too_large": "Too many items in one spawn.",
+
+  "err.meta_type": "Metadata must be a table.",
+  "err.meta_depth": "Metadata is nested too deeply.",
+  "err.meta_key": "Metadata keys must be short strings.",
+  "err.meta_keys": "Too many metadata keys.",
+  "err.meta_value": "Metadata values must be text, numbers or true/false.",
+
+  "err.bad_target": "Invalid target.",
+  "err.target_offline": "That player is not online.",
+
+  "err.no_room": "no room",
+  "err.add_failed": "inventory rejected it",
+  "err.no_items": "ox_inventory has no items registered.",
+
+  "err.bad_preset_name": "Preset names must be 1-48 characters.",
+  "err.preset_limit": "You have reached your preset limit.",
+  "err.unknown_preset": "That preset no longer exists."
+}
