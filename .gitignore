@@ -1,10 +1,5 @@
 node_modules/
 
-# Build output. Not committed: the Release workflow builds the NUI fresh from source and
-# attaches it to the release zip, so the repo never carries a compiled artifact that can
-# silently drift from web/src.
-web/build/
-
 # Runtime state: written by server/spawner/presets.lua at runtime. The data/ folder itself is
 # tracked (via .gitkeep) because SaveResourceFile writes into an existing directory.
 data/presets.json
